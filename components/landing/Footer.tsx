@@ -1,4 +1,10 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LocaleProvider";
+
 export function Footer() {
+  const { t } = useLocale();
+
   return (
     <footer className="footer">
       <div className="footer-inner">
@@ -6,110 +12,62 @@ export function Footer() {
           <a href="#" className="footer-logo">
             Aur<span className="accent">el</span>
           </a>
-          <p>
-            <span data-en>We validate. You review.</span>
-            <span data-ko>검증은 저희가. 확인은 당신이.</span>
-          </p>
+          <p>{t("footer.tagline")}</p>
         </div>
         <div className="footer-col">
-          <h4>
-            <span data-en>Solutions</span>
-            <span data-ko>솔루션</span>
-          </h4>
+          <h4>{t("footer.solutions")}</h4>
           <ul>
             <li>
-              <a href="#">
-                <span data-en>Accounting Automation</span>
-                <span data-ko>회계 자동화</span>
-              </a>
+              <a href="#">{t("footer.accountingAutomation")}</a>
             </li>
             <li>
-              <a href="#">
-                <span data-en>Audit Support</span>
-                <span data-ko>감사 지원</span>
-              </a>
+              <a href="#">{t("footer.auditSupport")}</a>
             </li>
             <li>
-              <a href="#">
-                <span data-en>Standards Coverage</span>
-                <span data-ko>회계기준 범위</span>
-              </a>
+              <a href="#">{t("footer.standardsCoverage")}</a>
             </li>
           </ul>
         </div>
         <div className="footer-col">
-          <h4>
-            <span data-en>Resources</span>
-            <span data-ko>리소스</span>
-          </h4>
+          <h4>{t("footer.resources")}</h4>
           <ul>
             <li>
-              <a href="#">
-                <span data-en>Documentation</span>
-                <span data-ko>문서</span>
-              </a>
+              <a href="#">{t("footer.documentation")}</a>
             </li>
             <li>
-              <a href="#">
-                <span data-en>Blog</span>
-                <span data-ko>블로그</span>
-              </a>
+              <a href="#">{t("footer.blog")}</a>
             </li>
             <li>
-              <a href="#">
-                <span data-en>FAQ</span>
-                <span data-ko>FAQ</span>
-              </a>
+              <a href="#">{t("footer.faq")}</a>
             </li>
           </ul>
         </div>
         <div className="footer-col">
-          <h4>
-            <span data-en>Company</span>
-            <span data-ko>회사</span>
-          </h4>
+          <h4>{t("footer.company")}</h4>
           <ul>
             <li>
-              <a href="#">
-                <span data-en>About</span>
-                <span data-ko>소개</span>
-              </a>
+              <a href="#">{t("footer.about")}</a>
             </li>
             <li>
-              <a href="#">
-                <span data-en>Contact</span>
-                <span data-ko>문의하기</span>
-              </a>
+              <a href="#">{t("footer.contact")}</a>
             </li>
           </ul>
         </div>
         <div className="footer-col">
-          <h4>
-            <span data-en>Legal</span>
-            <span data-ko>법적 고지</span>
-          </h4>
+          <h4>{t("footer.legal")}</h4>
           <ul>
             <li>
-              <a href="#">
-                <span data-en>Privacy Policy</span>
-                <span data-ko>개인정보처리방침</span>
-              </a>
+              <a href="#">{t("footer.privacyPolicy")}</a>
             </li>
             <li>
-              <a href="#">
-                <span data-en>Terms of Service</span>
-                <span data-ko>이용약관</span>
-              </a>
+              <a href="#">{t("footer.termsOfService")}</a>
             </li>
           </ul>
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© 2026 Aurel, Inc. All rights reserved.</span>
-        <span>
-          <span data-en>Privacy · Terms</span>
-          <span data-ko>개인정보 · 이용약관</span>
-        </span>
+        <span>{t("footer.copyright")}</span>
+        <span>{t("footer.bottomLinks")}</span>
       </div>
     </footer>
   );

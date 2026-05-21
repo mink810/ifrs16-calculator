@@ -1,0 +1,96 @@
+{
+  "nav": {
+    "standards": "Standards",
+    "findAdvisor": "Find an Advisor",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact us",
+    "ifrs16": "IFRS 16"
+  },
+  "hero": {
+    "eyebrow": "Financial Accounting Automation",
+    "titleLine1": "We validate.",
+    "titleLine2": "You review.",
+    "subtitle": "Aurel runs the calculations, checks the logic, and flags the exceptions — so your team spends time on judgment, not arithmetic.",
+    "pill": "Start with IFRS 16 →"
+  },
+  "features": {
+    "eyebrow": "How Aurel works",
+    "titleLine1": "Less checking.",
+    "titleLine2": "More confidence.",
+    "subtitle": "The hard part — calculating, reconciling, flagging — is handled. You step in where judgment matters.",
+    "items": [
+      {
+        "icon": "⚡",
+        "title": "Automated Calculations",
+        "desc": "Complex accounting logic runs automatically. By the time you see the number, it's already been checked."
+      },
+      {
+        "icon": "🔍",
+        "title": "Exception Flagging",
+        "desc": "Aurel surfaces what needs your attention — and only that. No more hunting through spreadsheets for anomalies."
+      },
+      {
+        "icon": "✅",
+        "title": "Full Audit Trail",
+        "desc": "Every figure links back to its source. Auditors follow the logic without asking for explanations."
+      },
+      {
+        "icon": "📁",
+        "title": "Audit-ready Workpapers",
+        "desc": "Schedules, reconciliations, and disclosures are structured and ready — before the auditor asks."
+      },
+      {
+        "icon": "📊",
+        "title": "Journal Entry Output",
+        "desc": "Entries go straight to your ERP in the right format. Month-end close without the manual lift."
+      },
+      {
+        "icon": "🔗",
+        "title": "Standards Coverage",
+        "desc": "Built around accounting standards — starting with IFRS 16, expanding across the full reporting landscape."
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "We validate. You review.",
+    "solutions": "Solutions",
+    "accountingAutomation": "Accounting Automation",
+    "auditSupport": "Audit Support",
+    "standardsCoverage": "Standards Coverage",
+    "resources": "Resources",
+    "documentation": "Documentation",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "company": "Company",
+    "about": "About",
+    "contact": "Contact",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "bottomLinks": "Privacy · Terms",
+    "copyright": "© 2026 Aurel, Inc. All rights reserved."
+  },
+  "calculator": {
+    "title": "📊 IFRS16 Lease Accounting System",
+    "subtitle": "Monthly Amortization Scheduler & Journal Entry Generator",
+    "inputTitle": "📋 Lease Contract Input",
+    "assetName": "Asset Name",
+    "period": "Lease Period (Months)",
+    "payment": "Monthly Payment",
+    "rate": "Annual Implicit Rate (%)",
+    "btnCalculate": "Calculate Schedule",
+    "tableTitle": "📅 Lease Amortization Schedule",
+    "btnExcel": "🟢 Export Excel (.xlsx)",
+    "colPeriod": "Period",
+    "colRou": "ROU Asset",
+    "colInterest": "Interest Expense",
+    "colPayment": "Lease Payment",
+    "colDeprn": "Depreciation",
+    "colCurrentLiab": "Current Liability",
+    "colNonCurrentLiab": "Non-current Liability",
+    "colTotalLiab": "Total Liability",
+    "subtotal": "Q Subtotal",
+    "tip": "💡 <strong>Initial & Termination J/E:</strong> Initial recognition and modification/termination gain or loss tracking can be managed via the tabs above."
+  }
+}

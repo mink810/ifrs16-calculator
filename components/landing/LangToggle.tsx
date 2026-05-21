@@ -1,29 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-type Lang = "en" | "ko";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function LangToggle() {
-  const [lang, setLang] = useState<Lang>("en");
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-  }, [lang]);
+  const { locale, setLocale } = useLocale();
 
   return (
     <div className="lang-toggle" role="group" aria-label="Language">
       <button
         type="button"
-        className={`lang-btn${lang === "en" ? " active" : ""}`}
-        onClick={() => setLang("en")}
+        className={`lang-btn${locale === "en" ? " active" : ""}`}
+        onClick={() => setLocale("en")}
       >
         EN
       </button>
       <button
         type="button"
-        className={`lang-btn${lang === "ko" ? " active" : ""}`}
-        onClick={() => setLang("ko")}
+        className={`lang-btn${locale === "ko" ? " active" : ""}`}
+        onClick={() => setLocale("ko")}
       >
         한국어
       </button>

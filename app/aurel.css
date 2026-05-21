@@ -52,12 +52,6 @@ body {
   padding: 0 var(--sp-xl);
 }
 
-/* ============================================================
-   LANG SWITCH — hide/show by data-lang on <html>
-   ============================================================ */
-html[lang="en"] [data-ko] { display: none; }
-html[lang="ko"] [data-en] { display: none; }
-
 .lang-toggle {
   display: flex;
   align-items: center;
@@ -442,4 +436,206 @@ html[lang="ko"] [data-en] { display: none; }
   .aurel-page .hero h1 { font-size: 32px; }
   .aurel-page .container { padding: 0 var(--sp-md); }
   .aurel-page .footer-inner { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   IFRS 16 CALCULATOR
+   ============================================================ */
+.aurel-page .calculator-main {
+  padding: var(--sp-xxl) 0 var(--sp-section);
+}
+
+.aurel-page .calculator-header {
+  margin-bottom: var(--sp-xxl);
+}
+
+.aurel-page .calculator-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  margin-bottom: var(--sp-xs);
+}
+
+.aurel-page .calculator-header p {
+  font-size: 15px;
+  color: var(--color-ink-muted);
+}
+
+.aurel-page .calculator-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--sp-xl);
+  align-items: start;
+}
+
+.aurel-page .calculator-panel {
+  background: var(--color-surface-1);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--r-lg);
+  padding: var(--sp-lg);
+}
+
+.aurel-page .calculator-panel h2 {
+  font-size: 15px;
+  font-weight: 700;
+  padding-bottom: var(--sp-sm);
+  margin-bottom: var(--sp-md);
+  border-bottom: 1px solid var(--color-hairline-soft);
+}
+
+.aurel-page .calculator-field {
+  margin-bottom: var(--sp-md);
+}
+
+.aurel-page .calculator-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-ink-muted);
+  margin-bottom: 6px;
+}
+
+.aurel-page .calculator-field input {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--r-md);
+  background: var(--color-surface-1);
+  color: var(--color-ink);
+}
+
+.aurel-page .calculator-field input:focus {
+  outline: none;
+  border-color: var(--color-ink-muted);
+}
+
+.aurel-page .calculator-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: var(--sp-sm);
+}
+
+.aurel-page .calculator-table-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-md);
+  padding-bottom: var(--sp-sm);
+  border-bottom: 1px solid var(--color-hairline-soft);
+}
+
+.aurel-page .calculator-table-head h2 {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.aurel-page .calculator-excel-btn {
+  background: #059669;
+  color: var(--color-on-primary);
+  font-size: 12px;
+  padding: 8px 14px;
+}
+
+.aurel-page .calculator-excel-btn:hover {
+  opacity: 0.9;
+}
+
+.aurel-page .calculator-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--r-md);
+}
+
+.aurel-page .calculator-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.aurel-page .calculator-table thead {
+  background: var(--color-surface-2);
+  color: var(--color-ink-muted);
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.aurel-page .calculator-table th,
+.aurel-page .calculator-table td {
+  padding: 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--color-hairline-soft);
+}
+
+.aurel-page .calculator-table th.col-period,
+.aurel-page .calculator-table td.col-period {
+  text-align: center;
+  width: 64px;
+  color: var(--color-ink-subtle);
+  font-weight: 600;
+}
+
+.aurel-page .calculator-table th.col-current,
+.aurel-page .calculator-table td.col-current {
+  color: #4338ca;
+}
+
+.aurel-page .calculator-table th.col-noncurrent,
+.aurel-page .calculator-table td.col-noncurrent {
+  color: #047857;
+}
+
+.aurel-page .calculator-table td.col-total {
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.aurel-page .calculator-table tbody tr:hover:not(.row-subtotal) {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.aurel-page .calculator-table .row-subtotal {
+  background: var(--color-surface-2);
+  font-weight: 700;
+  color: var(--color-ink-muted);
+}
+
+.aurel-page .calculator-table .row-subtotal td:first-child {
+  background: rgba(0, 0, 0, 0.04);
+  font-size: 11px;
+}
+
+.aurel-page .calculator-table .muted {
+  color: var(--color-ink-tertiary);
+}
+
+.aurel-page .calculator-table .accent-interest {
+  color: #b45309;
+}
+
+.aurel-page .calculator-table .accent-deprn {
+  color: #1d4ed8;
+}
+
+.aurel-page .calculator-tip {
+  margin-top: var(--sp-md);
+  font-size: 12px;
+  color: var(--color-ink-subtle);
+  background: var(--color-surface-2);
+  border: 1px dashed var(--color-hairline);
+  border-radius: var(--r-md);
+  padding: var(--sp-sm) var(--sp-md);
+  line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+  .aurel-page .calculator-grid {
+    grid-template-columns: 1fr;
+  }
 }
