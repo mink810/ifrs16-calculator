@@ -66,7 +66,12 @@ export function Ifrs16Calculator() {
                 </button>
               </div>
 
-              <div className="calculator-table-wrap">
+              <div
+                className="calculator-table-wrap"
+                role="region"
+                aria-label={c("tableTitle")}
+                tabIndex={0}
+              >
                 <table className="calculator-table">
                   <thead>
                     <tr>

@@ -431,11 +431,87 @@ body {
   .aurel-page .feature-grid { grid-template-columns: 1fr; }
   .aurel-page .nav-links { display: none; }
   .aurel-page .footer-inner { grid-template-columns: 1fr 1fr; gap: var(--sp-xl); }
+
+  .aurel-page .calculator-main {
+    padding: var(--sp-xl) 0 var(--sp-xxl);
+  }
+  .aurel-page .calculator-header {
+    margin-bottom: var(--sp-xl);
+  }
+  .aurel-page .calculator-header h1 {
+    font-size: 26px;
+    letter-spacing: -0.5px;
+  }
+  .aurel-page .calculator-grid {
+    gap: var(--sp-lg);
+  }
+  .aurel-page .calculator-panel--table {
+    padding: var(--sp-md);
+  }
+  .aurel-page .calculator-table-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .aurel-page .calculator-excel-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .aurel-page .calculator-table-wrap {
+    margin-inline: calc(-1 * var(--sp-md));
+    border-inline: none;
+    border-radius: 0;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .aurel-page .calculator-table th.col-period,
+  .aurel-page .calculator-table td.col-period {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--color-surface-1);
+    box-shadow: 4px 0 8px -4px rgba(0, 0, 0, 0.12);
+  }
+  .aurel-page .calculator-table thead th.col-period {
+    z-index: 3;
+    background: var(--color-surface-2);
+  }
+  .aurel-page .calculator-table tbody tr:hover:not(.row-subtotal) td.col-period {
+    background: var(--color-surface-1);
+  }
+  .aurel-page .calculator-table .row-subtotal td.col-period {
+    background: rgba(0, 0, 0, 0.04);
+  }
 }
 @media (max-width: 480px) {
   .aurel-page .hero h1 { font-size: 32px; }
   .aurel-page .container { padding: 0 var(--sp-md); }
   .aurel-page .footer-inner { grid-template-columns: 1fr; }
+
+  .aurel-page .calculator-header h1 {
+    font-size: 22px;
+  }
+  .aurel-page .calculator-header p {
+    font-size: 14px;
+  }
+  .aurel-page .calculator-panel {
+    padding: var(--sp-md);
+  }
+  .aurel-page .calculator-table {
+    font-size: 11px;
+    min-width: 760px;
+  }
+  .aurel-page .calculator-table th,
+  .aurel-page .calculator-table td {
+    padding: 8px 6px;
+  }
+  .aurel-page .calculator-table th.col-period,
+  .aurel-page .calculator-table td.col-period {
+    width: 48px;
+    min-width: 48px;
+  }
+  .aurel-page .calculator-tip {
+    font-size: 11px;
+  }
 }
 
 /* ============================================================
@@ -549,6 +625,7 @@ body {
   overflow-x: auto;
   border: 1px solid var(--color-hairline);
   border-radius: var(--r-md);
+  overscroll-behavior-x: contain;
 }
 
 .aurel-page .calculator-table {
@@ -556,6 +633,7 @@ body {
   min-width: 900px;
   border-collapse: collapse;
   font-size: 12px;
+  font-variant-numeric: tabular-nums;
 }
 
 .aurel-page .calculator-table thead {
