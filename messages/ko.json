@@ -8,89 +8,89 @@
     "ifrs16": "IFRS 16"
   },
   "hero": {
-    "eyebrow": "재무회계 자동화 플랫폼",
-    "titleLine1": "검증은 저희가.",
-    "titleLine2": "확인은 당신이.",
-    "subtitle": "Aurel이 계산하고, 논리를 점검하고, 예외를 짚어냅니다. 당신의 팀은 판단에만 집중하세요.",
-    "pill": "IFRS 16부터 시작하기 →"
+    "eyebrow": "재무회계 자동화 솔루션",
+    "titleLine1": "계산은 시스템이,",
+    "titleLine2": "검토는 재무팀이.",
+    "subtitle": "Aurel이 복잡한 회계 산식을 돌리고 로직을 검증하며 예외 사항을 찾아냅니다. 이제 재무팀은 단순 연산이 아닌 본질적인 회계적 판단에만 집중하세요.",
+    "pill": "IFRS 16 시작하기 →"
   },
   "features": {
-    "eyebrow": "Aurel의 방식",
-    "titleLine1": "덜 확인하고.",
-    "titleLine2": "더 확신하세요.",
-    "subtitle": "계산, 조정, 예외 처리 — 어려운 부분은 처리됩니다. 당신은 판단이 필요한 곳에서만 개입하세요.",
+    "eyebrow": "Aurel 작동 방식",
+    "titleLine1": "단순 반복 검토는 줄이고,",
+    "titleLine2": "회계 신뢰도는 높이고.",
+    "subtitle": "복잡한 계산, 데이터 대조, 예외 항목 필터링 등 머리 아픈 작업은 모두 자동 처리됩니다. 당신은 오직 중요한 의사결정 시점에만 개입하세요.",
     "items": [
       {
         "icon": "⚡",
-        "title": "자동 계산",
-        "desc": "복잡한 회계 로직이 자동으로 실행됩니다. 숫자를 보는 순간, 이미 검증된 상태입니다."
+        "title": "회계 처리 자동화",
+        "desc": "복잡한 회계 로직이 백단에서 자동으로 구동됩니다. 당신이 최종 숫자를 확인하는 시점에는 이미 완벽한 검증이 끝난 상태입니다."
       },
       {
         "icon": "🔍",
-        "title": "예외 항목 자동 감지",
-        "desc": "주의가 필요한 항목만 짚어줍니다. 스프레드시트에서 이상 항목을 찾아 헤매지 않아도 됩니다."
+        "title": "예외 항목 및 에러 감지",
+        "desc": "주의가 필요한 특이 사항만 콕 집어 화면에 띄워줍니다. 이상 수치를 찾기 위해 더 이상 수많은 엑셀 시트를 뒤질 필요가 없습니다."
       },
       {
         "icon": "✅",
-        "title": "완전한 감사 추적",
-        "desc": "모든 수치는 원천까지 연결됩니다. 감사인은 설명을 요청하지 않아도 논리를 따라갈 수 있습니다."
+        "title": "완벽한 감사 추적 기능 (Audit Trail)",
+        "desc": "모든 산출 수치가 최초 기초 데이터 소스와 유기적으로 연결됩니다. 감사인은 추가 설명 요청 없이도 계산 로직을 한눈에 파악할 수 있습니다."
       },
       {
         "icon": "📁",
-        "title": "감사 조서 자동 생성",
-        "desc": "스케줄, 조정표, 공시자료가 구조화되어 준비됩니다 — 감사인이 요청하기 전에."
+        "title": "감사 수감용 조서 자동 생성",
+        "desc": "상각 스케줄표, 재무제표 대조표, 주석 공시 자료까지 — 회계 감사인이 요구하기 전에 제출 준비가 모두 완료됩니다."
       },
       {
         "icon": "📊",
-        "title": "분개 자동 출력",
-        "desc": "올바른 형식으로 ERP에 바로 전달됩니다. 수작업 없는 월말 결산."
+        "title": "자동 분개 및 전표 추출",
+        "desc": "회계 전표가 사용 중인 ERP 포맷에 맞춰 즉시 생성됩니다. 수작업 없는 깔끔한 월 결산을 경험해 보세요."
       },
       {
         "icon": "🔗",
-        "title": "회계기준 대응",
-        "desc": "IFRS 16을 시작으로, 전체 회계기준 보고 영역으로 확장합니다."
+        "title": "표준 회계기준 커버리지",
+        "desc": "글로벌 회계기준을 완벽히 준수합니다. 가장 까다로운 IFRS 16 리스회계를 시작으로, 재무 보고 전반으로 영역을 확장해 나갑니다."
       }
     ]
   },
   "footer": {
-    "tagline": "검증은 저희가. 확인은 당신이.",
+    "tagline": "계산은 시스템이, 검토는 재무팀이.",
     "solutions": "솔루션",
     "accountingAutomation": "회계 자동화",
-    "auditSupport": "감사 지원",
-    "standardsCoverage": "회계기준 범위",
-    "resources": "리소스",
-    "documentation": "문서",
+    "auditSupport": "회계 감사 수감 지원",
+    "standardsCoverage": "지원 회계기준",
+    "resources": "자료실",
+    "documentation": "사용 가이드 Documents",
     "blog": "블로그",
-    "faq": "FAQ",
+    "faq": "자주 묻는 질문 (FAQ)",
     "company": "회사",
     "about": "소개",
-    "contact": "문의하기",
+    "contact": "문의",
     "legal": "법적 고지",
     "privacyPolicy": "개인정보처리방침",
     "termsOfService": "이용약관",
-    "bottomLinks": "개인정보 · 이용약관",
+    "bottomLinks": "개인정보처리방침 · 이용약관",
     "copyright": "© 2026 Aurel, Inc. All rights reserved."
   },
   "calculator": {
-    "title": "📊 IFRS16 리스회계 자산 관리 시스템",
-    "subtitle": "월별 리스 상각 스케줄러 및 전표 자동 생성 내부 툴",
-    "inputTitle": "📋 리스 계약 정보 입력",
+    "title": "IFRS 16 리스회계 자산 관리 시스템",
+    "subtitle": "월별 리스 상각 스케줄러 및 전표 자동 생성 시스템",
+    "inputTitle": "리스 계약 정보 입력",
     "assetName": "리스 자산명",
     "period": "리스 기간 (개월)",
     "payment": "약정 월 리스료",
     "rate": "연 내재이자율 (%)",
     "btnCalculate": "리스 스케줄 계산",
-    "tableTitle": "📅 리스 상각 스케줄표",
+    "tableTitle": "리스 상각 스케줄표",
     "btnExcel": "🟢 Excel 다운로드 (.xlsx)",
     "colPeriod": "회차",
-    "colRou": "사용권자산 (ROU)",
+    "colRou": "사용권자산 (ROU Asset)",
     "colInterest": "이자비용",
     "colPayment": "리스료 지급",
-    "colDeprn": "감가상각",
+    "colDeprn": "감가상각비",
     "colCurrentLiab": "단기 리스부채",
     "colNonCurrentLiab": "장기 리스부채",
-    "colTotalLiab": "리스부채 잔액",
+    "colTotalLiab": "리스부채 총 잔액",
     "subtotal": "분기 소계",
-    "tip": "💡 <strong>취득 및 매각 시점 전표:</strong> 최초 취득 전표 및 중간 매각에 따른 처분손익 계산은 상단 탭이나 특수 상황 메뉴에서 추적할 수 있습니다."
+    "tip": "💡 <strong>최초 취득 및 중간 매각 전표:</strong> 최초 취득 시점의 인식 분개 및 계약 변경/중간 해지에 따른 처분손익 추적은 상단 탭에서 관리할 수 있습니다."
   }
 }

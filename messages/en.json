@@ -72,15 +72,15 @@
     "copyright": "© 2026 Aurel, Inc. All rights reserved."
   },
   "calculator": {
-    "title": "📊 IFRS16 Lease Accounting System",
+    "title": "IFRS16 Lease Accounting System",
     "subtitle": "Monthly Amortization Scheduler & Journal Entry Generator",
-    "inputTitle": "📋 Lease Contract Input",
+    "inputTitle": "Lease Contract Input",
     "assetName": "Asset Name",
     "period": "Lease Period (Months)",
     "payment": "Monthly Payment",
     "rate": "Annual Implicit Rate (%)",
     "btnCalculate": "Calculate Schedule",
-    "tableTitle": "📅 Lease Amortization Schedule",
+    "tableTitle": "Lease Amortization Schedule",
     "btnExcel": "🟢 Export Excel (.xlsx)",
     "colPeriod": "Period",
     "colRou": "ROU Asset",
