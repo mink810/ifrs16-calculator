@@ -1,0 +1,445 @@
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --color-canvas:        #f5f1ec;
+  --color-surface-1:     #ffffff;
+  --color-surface-2:     #ede9e3;
+  --color-ink:           #111111;
+  --color-ink-muted:     #626260;
+  --color-ink-subtle:    #7b7b78;
+  --color-ink-tertiary:  #9c9fa5;
+  --color-on-primary:    #ffffff;
+  --color-orange:        #ff5600;
+  --color-hairline:      #d3cec6;
+  --color-hairline-soft: #e2ddd7;
+
+  --sp-xs: 8px; --sp-sm: 12px; --sp-md: 16px; --sp-lg: 24px;
+  --sp-xl: 32px; --sp-xxl: 48px; --sp-section: 96px;
+
+  --r-md: 8px; --r-lg: 12px; --r-xl: 16px; --r-pill: 9999px;
+
+  --font-sans: Arial, Helvetica, sans-serif;
+}
+
+/* ============================================================
+   RESET & BASE (landing)
+   ============================================================ */
+.aurel-page *,
+.aurel-page *::before,
+.aurel-page *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.aurel-page .container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--sp-xl);
+}
+
+/* ============================================================
+   LANG SWITCH — hide/show by data-lang on <html>
+   ============================================================ */
+html[lang="en"] [data-ko] { display: none; }
+html[lang="ko"] [data-en] { display: none; }
+
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  background: var(--color-surface-2);
+  border-radius: var(--r-pill);
+  padding: 3px;
+  gap: 2px;
+  border: none;
+  cursor: default;
+}
+.lang-btn {
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: transparent;
+  color: var(--color-ink-muted);
+  transition: background 0.15s, color 0.15s;
+}
+.lang-btn.active {
+  background: var(--color-surface-1);
+  color: var(--color-ink);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.aurel-page .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  padding: 10px 18px;
+  border-radius: var(--r-md);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.aurel-page .btn:hover { opacity: 0.85; }
+.aurel-page .btn:active { transform: scale(0.98); }
+.aurel-page .btn-primary  { background: var(--color-ink); color: var(--color-on-primary); }
+.aurel-page .btn-secondary {
+  background: var(--color-surface-1);
+  color: var(--color-ink);
+  border: 1px solid var(--color-hairline);
+}
+
+/* ============================================================
+   TOP NAV
+   ============================================================ */
+.aurel-page .top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 60px;
+  background: var(--color-canvas);
+  border-bottom: 1px solid var(--color-hairline-soft);
+  display: flex;
+  align-items: center;
+}
+.aurel-page .top-nav .container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.aurel-page .nav-logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-ink);
+  text-decoration: none;
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
+}
+.aurel-page .nav-logo .accent { color: var(--color-orange); }
+
+.aurel-page .nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xl);
+  list-style: none;
+  flex: 1;
+  justify-content: center;
+}
+.aurel-page .nav-links a {
+  font-size: 14px;
+  color: var(--color-ink-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.aurel-page .nav-links a:hover { color: var(--color-ink); }
+.aurel-page .nav-links a.nav-advisor {
+  color: var(--color-orange);
+  font-weight: 500;
+}
+.aurel-page .nav-links a.nav-advisor:hover { opacity: 0.75; color: var(--color-orange); }
+
+.aurel-page .nav-dropdown {
+  position: relative;
+}
+.aurel-page .nav-dropdown > a {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.aurel-page .nav-dropdown > a::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  opacity: 0.5;
+}
+.aurel-page .nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-surface-1);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--r-lg);
+  padding: 8px;
+  min-width: 180px;
+  z-index: 200;
+}
+.aurel-page .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.aurel-page .nav-dropdown-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  color: var(--color-ink) !important;
+  text-decoration: none;
+  transition: background 0.12s;
+  white-space: nowrap;
+}
+.aurel-page .nav-dropdown-menu a:hover { background: var(--color-surface-2); }
+.aurel-page .nav-dropdown-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,86,0,0.10);
+  color: var(--color-orange);
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: -0.3px;
+}
+
+.aurel-page .nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.aurel-page .hero {
+  padding: var(--sp-section) 0 calc(var(--sp-section) * 0.75);
+  text-align: center;
+}
+.aurel-page .hero-eyebrow {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-orange);
+  background: rgba(255,86,0,0.08);
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  margin-bottom: var(--sp-lg);
+  letter-spacing: 0.3px;
+}
+.aurel-page .hero h1 {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  max-width: 860px;
+  margin: 0 auto var(--sp-lg);
+}
+.aurel-page .hero-sub {
+  font-size: 18px;
+  color: var(--color-ink-muted);
+  max-width: 540px;
+  margin: 0 auto var(--sp-lg);
+  line-height: 1.6;
+}
+.aurel-page .hero-pill-row {
+  margin-top: var(--sp-md);
+}
+.aurel-page .hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 8px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--color-hairline);
+  background: var(--color-surface-1);
+  text-decoration: none;
+  color: var(--color-ink);
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color 0.15s, background 0.15s;
+}
+.aurel-page .hero-pill:hover {
+  border-color: var(--color-orange);
+  background: rgba(255,86,0,0.04);
+}
+.aurel-page .hero-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255,86,0,0.10);
+  color: var(--color-orange);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   SECTION WRAPPER
+   ============================================================ */
+.aurel-page .section { padding: var(--sp-section) 0; }
+.aurel-page .section-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+.aurel-page .section-header .eyebrow {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-ink-muted);
+  margin-bottom: var(--sp-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.aurel-page .section-header h2 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.10;
+  letter-spacing: -1.2px;
+  margin-bottom: var(--sp-md);
+}
+.aurel-page .section-header p {
+  font-size: 18px;
+  color: var(--color-ink-muted);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   FEATURE CARDS GRID
+   ============================================================ */
+.aurel-page .feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-lg);
+}
+.aurel-page .feature-card {
+  background: var(--color-surface-1);
+  border-radius: var(--r-lg);
+  padding: var(--sp-lg);
+  border: 1px solid var(--color-hairline);
+}
+.aurel-page .feature-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  background: rgba(255,86,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--sp-md);
+  font-size: 18px;
+}
+.aurel-page .feature-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: var(--sp-xs);
+  letter-spacing: -0.2px;
+}
+.aurel-page .feature-card p {
+  font-size: 14px;
+  color: var(--color-ink-muted);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.aurel-page .footer {
+  border-top: 1px solid var(--color-hairline-soft);
+  padding: 64px var(--sp-xl) 40px;
+  margin-top: var(--sp-section);
+}
+.aurel-page .footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 220px repeat(4, 1fr);
+  gap: var(--sp-xxl);
+}
+.aurel-page .footer-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-ink);
+  text-decoration: none;
+  display: block;
+  margin-bottom: var(--sp-md);
+  letter-spacing: -0.3px;
+}
+.aurel-page .footer-logo .accent { color: var(--color-orange); }
+.aurel-page .footer-brand p {
+  font-size: 13px;
+  color: var(--color-ink-subtle);
+  line-height: 1.6;
+}
+.aurel-page .footer-col h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-bottom: var(--sp-md);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.aurel-page .footer-col ul { list-style: none; }
+.aurel-page .footer-col li { margin-bottom: var(--sp-xs); }
+.aurel-page .footer-col a {
+  font-size: 13px;
+  color: var(--color-ink-subtle);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.aurel-page .footer-col a:hover { color: var(--color-ink); }
+.aurel-page .footer-bottom {
+  max-width: 1280px;
+  margin: var(--sp-xxl) auto 0;
+  padding-top: var(--sp-lg);
+  border-top: 1px solid var(--color-hairline-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.aurel-page .footer-bottom span {
+  font-size: 12px;
+  color: var(--color-ink-tertiary);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .aurel-page .feature-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .aurel-page .hero h1 { font-size: 40px; letter-spacing: -1px; }
+  .aurel-page .section-header h2 { font-size: 36px; }
+  .aurel-page .feature-grid { grid-template-columns: 1fr; }
+  .aurel-page .nav-links { display: none; }
+  .aurel-page .footer-inner { grid-template-columns: 1fr 1fr; gap: var(--sp-xl); }
+}
+@media (max-width: 480px) {
+  .aurel-page .hero h1 { font-size: 32px; }
+  .aurel-page .container { padding: 0 var(--sp-md); }
+  .aurel-page .footer-inner { grid-template-columns: 1fr; }
+}
