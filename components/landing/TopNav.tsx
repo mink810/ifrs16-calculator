@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { LangToggle } from "./LangToggle";
 
 export function TopNav() {
@@ -16,11 +17,11 @@ export function TopNav() {
               회계기준
             </a>
             <div className="nav-dropdown-menu">
-              <a href="#">
+              <Link href="/ifrs16">
                 <span className="nav-dropdown-badge">16</span>
                 <span data-en>IFRS 16</span>
                 <span data-ko>IFRS 16</span>
-              </a>
+              </Link>
             </div>
           </li>
           <li>

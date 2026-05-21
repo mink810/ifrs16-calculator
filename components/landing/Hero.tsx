@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Hero() {
   return (
     <section className="hero">
@@ -29,11 +31,11 @@ export function Hero() {
           </span>
         </p>
         <div className="hero-pill-row">
-          <a href="#" className="hero-pill">
+          <Link href="/ifrs16" className="hero-pill">
             <span className="hero-pill-badge">16</span>
             <span data-en>Start with IFRS 16 →</span>
             <span data-ko>IFRS 16부터 시작하기 →</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
