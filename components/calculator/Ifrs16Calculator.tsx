@@ -37,6 +37,34 @@ export function Ifrs16Calculator() {
               </div>
 
               <div className="calculator-field">
+                <label>{c("commencementDate")}</label>
+                <input
+                  type="date"
+                  defaultValue="2024-01-01"
+                  suppressHydrationWarning
+                />
+              </div>
+
+              <div className="calculator-field">
+                <label>{c("postingDate")}</label>
+                <input
+                  type="date"
+                  defaultValue="2024-01-01"
+                  suppressHydrationWarning
+                />
+              </div>
+
+              <div className="calculator-field">
+                <label>{c("initialCost")}</label>
+                <input type="number" defaultValue={42000000} />
+              </div>
+
+              <div className="calculator-field">
+                <label>{c("depreciationPeriod")}</label>
+                <input type="number" defaultValue={60} />
+              </div>
+
+              <div className="calculator-field">
                 <label>{c("period")}</label>
                 <input type="number" defaultValue={60} />
               </div>
@@ -50,7 +78,7 @@ export function Ifrs16Calculator() {
 
               <div className="calculator-field">
                 <label>{c("rate")}</label>
-                <input type="number" step="0.1" defaultValue={5.0} />
+                <input type="number" step="0.1" defaultValue={5} />
               </div>
 
               <button type="button" className="btn btn-primary calculator-submit">
