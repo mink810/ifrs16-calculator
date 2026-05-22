@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Ifrs16Calculator } from "@/components/calculator/Ifrs16Calculator";
+import { Ifrs16Portfolio } from "@/components/calculator/Ifrs16Portfolio";
 
 export const metadata: Metadata = {
   title: "IFRS 16 — Aurel",
-  description: "IFRS 16 리스회계 상각 스케줄 및 전표 계산",
+  description: "멀티 자산 IFRS 16 포트폴리오 상각 스케줄 및 통합 전표 관리",
 };
 
 export default function Ifrs16Page() {
-  return <Ifrs16Calculator />;
+  return <Ifrs16Portfolio />;
 }
