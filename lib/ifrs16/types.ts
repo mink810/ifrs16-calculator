@@ -30,3 +30,11 @@ export type LeaseSubtotalRow = {
 };
 
 export type LeaseScheduleRow = LeasePeriodRow | LeaseSubtotalRow;
+
+export type LeaseAsset = {
+  id: string;
+  inputs: LeaseInputs;
+  schedule: LeaseScheduleRow[];
+};
+
+export type PortfolioTabId = "summary" | string;

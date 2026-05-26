@@ -752,11 +752,15 @@ body {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.aurel-page .calculator-tab {
+.aurel-page .calculator-tab-item,
+.aurel-page button.calculator-tab-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
-  padding: 8px 16px;
+  padding: 0 4px 0 12px;
   border: none;
   border-top: 2px solid transparent;
   border-radius: var(--r-md) var(--r-md) 0 0;
@@ -766,23 +770,62 @@ body {
   transition: color 0.15s, background 0.15s, border-color 0.15s;
 }
 
-.aurel-page .calculator-tab:hover {
+.aurel-page .calculator-tab-item:hover,
+.aurel-page button.calculator-tab-item:hover {
   color: var(--color-ink-muted);
 }
 
-.aurel-page .calculator-tab--active {
+.aurel-page .calculator-tab-item--active,
+.aurel-page button.calculator-tab-item--active {
   background: var(--color-surface-2);
   color: var(--color-ink);
   font-weight: 700;
   border-top-color: var(--color-ink);
 }
 
-.aurel-page .calculator-tab--active.calculator-tab--asset1 {
+.aurel-page .calculator-tab-item--active.calculator-tab-item--asset1 {
   border-top-color: #4338ca;
 }
 
-.aurel-page .calculator-tab--active.calculator-tab--asset2 {
+.aurel-page .calculator-tab-item--active.calculator-tab-item--asset2 {
   border-top-color: #047857;
+}
+
+.aurel-page .calculator-tab-label {
+  font: inherit;
+  font-weight: inherit;
+  color: inherit;
+  padding: 8px 4px 8px 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.aurel-page .calculator-tab-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--color-ink-tertiary);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.aurel-page .calculator-tab-close:hover {
+  color: var(--color-ink);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.aurel-page .calculator-tab-item--active .calculator-tab-close:hover {
+  background: rgba(0, 0, 0, 0.08);
 }
 
 .aurel-page .calculator-tab-add {
