@@ -10,7 +10,7 @@ import { usePortfolioStore } from "@/stores/use-portfolio-store";
 export function Ifrs16Portfolio() {
   const { t } = useLocale();
   const c = (key: string) => t(`calculator.${key}`);
-  const { assets, activeTabId, addAsset, removeAsset, setActiveTab, setInput } =
+  const { assets, activeTabId, addAsset, removeAsset, setActiveTab, setInput, calculateAsset } =
     usePortfolioStore();
 
   const activeAsset = assets.find((asset) => asset.id === activeTabId);
@@ -39,18 +39,23 @@ export function Ifrs16Portfolio() {
             <h1>{c("title")}</h1>
             <p>{c("subtitle")}</p>
           </header>
-
+          
           <div className="calculator-workspace">
-            <div className="calculator-tabs" role="tablist" aria-label={c("title")}>
-              <button
-                type="button"
+            {/* 탭 목록 */}
+            <div className="calculator-tabs" role="tablist" aria-label={c("title")}>   
+              <div
                 role="tab"
                 aria-selected={activeTabId === "summary"}
                 className={tabItemClass("summary")}
-                onClick={() => setActiveTab("summary")}
               >
-                {c("tabSummary")}
-              </button>
+                <button
+                  type="button"
+                  className="calculator-tab-label"
+                  onClick={() => setActiveTab("summary")}
+                >
+                  {c("tabSummary")}
+                </button>
+              </div>
               {assets.map((asset, index) => (
                 <div
                   key={asset.id}
@@ -89,6 +94,7 @@ export function Ifrs16Portfolio() {
                 inputs={activeAsset.inputs}
                 schedule={activeAsset.schedule}
                 onInputChange={(key, value) => setInput(activeAsset.id, key, value)}
+                onCalculate={() => calculateAsset(activeAsset.id)}
               />
             )}
           </div>

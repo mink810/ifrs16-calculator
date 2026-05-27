@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { calculateRouAsset } from "@/lib/ifrs16/calculate-rou-asset";
 import { calculateSchedule } from "@/lib/ifrs16/calculate-schedule";
 import type { LeaseAsset, LeaseInputs, PortfolioTabId } from "@/lib/ifrs16/types";
 
@@ -33,7 +34,7 @@ function createAsset(inputs: LeaseInputs): LeaseAsset {
 }
 
 const initialAssets: LeaseAsset[] = [
-  createAsset({ ...defaultLeaseInputs, assetName: "Genesis G80" }),
+  createAsset({ ...emptyLeaseInputs }),
 ];
 
 type PortfolioState = {
@@ -47,6 +48,7 @@ type PortfolioState = {
     key: K,
     value: LeaseInputs[K]
   ) => void;
+  calculateAsset: (assetId: string) => void;
 };
 
 export const usePortfolioStore = create<PortfolioState>((set) => ({
@@ -78,8 +80,20 @@ export const usePortfolioStore = create<PortfolioState>((set) => ({
   setInput: (assetId, key, value) =>
     set((state) => ({
       assets: state.assets.map((asset) => {
+        if (asset.id !== assetId || key === "initialCost") return asset;
+        return { ...asset, inputs: { ...asset.inputs, [key]: value } };
+      }),
+    })),
+  calculateAsset: (assetId) =>
+    set((state) => ({
+      assets: state.assets.map((asset) => {
         if (asset.id !== assetId) return asset;
-        const inputs = { ...asset.inputs, [key]: value };
+        const initialCost = calculateRouAsset(
+          asset.inputs.monthlyPayment,
+          asset.inputs.leaseTerm,
+          asset.inputs.annualRate
+        );
+        const inputs = { ...asset.inputs, initialCost };
         return { ...asset, inputs, schedule: calculateSchedule(inputs) };
       }),
     })),

@@ -612,6 +612,13 @@ body {
   border-color: var(--color-ink-muted);
 }
 
+.aurel-page .calculator-field input:disabled,
+.aurel-page .calculator-field input.calculator-field-input--computed {
+  background: var(--color-surface-2);
+  color: var(--color-ink-muted);
+  cursor: not-allowed;
+}
+
 .aurel-page .calculator-submit {
   width: 100%;
   justify-content: center;
@@ -752,35 +759,39 @@ body {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.aurel-page .calculator-tab-item,
-.aurel-page button.calculator-tab-item {
+.aurel-page .calculator-tab-item {
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 600;
-  padding: 0 4px 0 12px;
+  min-height: 38px;
+  padding: 0 8px 0 12px;
   border: none;
   border-top: 2px solid transparent;
   border-radius: var(--r-md) var(--r-md) 0 0;
   background: transparent;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
   color: var(--color-ink-tertiary);
-  cursor: pointer;
+  cursor: default;
   transition: color 0.15s, background 0.15s, border-color 0.15s;
 }
 
-.aurel-page .calculator-tab-item:hover,
-.aurel-page button.calculator-tab-item:hover {
+.aurel-page .calculator-tab-item:hover {
   color: var(--color-ink-muted);
+  background: rgba(0, 0, 0, 0.03);
 }
 
-.aurel-page .calculator-tab-item--active,
-.aurel-page button.calculator-tab-item--active {
+.aurel-page .calculator-tab-item--active {
   background: var(--color-surface-2);
   color: var(--color-ink);
   font-weight: 700;
   border-top-color: var(--color-ink);
+}
+
+.aurel-page .calculator-tab-item--active:hover {
+  background: var(--color-surface-2);
+  color: var(--color-ink);
 }
 
 .aurel-page .calculator-tab-item--active.calculator-tab-item--asset1 {
@@ -799,6 +810,7 @@ body {
   border: none;
   background: transparent;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .aurel-page .calculator-tab-close {

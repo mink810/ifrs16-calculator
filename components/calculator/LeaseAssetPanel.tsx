@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
+import { exportScheduleToXlsx } from "@/lib/ifrs16/export-schedule-xlsx";
 import { formatAmount } from "@/lib/ifrs16/format";
 import type { LeaseInputs, LeaseScheduleRow } from "@/lib/ifrs16/types";
 
@@ -12,6 +14,7 @@ type LeaseAssetPanelProps = {
     key: K,
     value: LeaseInputs[K]
   ) => void;
+  onCalculate: () => void;
 };
 
 export function LeaseAssetPanel({
@@ -19,9 +22,12 @@ export function LeaseAssetPanel({
   inputs,
   schedule,
   onInputChange,
+  onCalculate,
 }: LeaseAssetPanelProps) {
   const { t } = useLocale();
   const c = (key: string) => t(`calculator.${key}`);
+
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const parseNumber = (value: string) => {
     const parsed = Number(value);
@@ -30,21 +36,66 @@ export function LeaseAssetPanel({
 
   const numberValue = (n: number) => (n === 0 ? "" : n);
 
+  const validateBeforeCalculate = (): string | null => {
+    if (!inputs.assetName.trim()) return c("validationAssetNameRequired");
+    if (!inputs.commencementDate.trim()) return c("validationCommencementDateRequired");
+    if (!inputs.postingDate.trim()) return c("validationPostingDateRequired");
+    if (inputs.leaseTerm <= 0) return c("validationLeaseTermRequired");
+    if (inputs.depreciationPeriod <= 0)
+      return c("validationDepreciationPeriodRequired");
+    if (inputs.monthlyPayment <= 0) return c("validationMonthlyPaymentRequired");
+    if (inputs.annualRate < 0) return c("validationAnnualRateInvalid");
+    return null;
+  };
+
+  const handleCalculate = () => {
+    const msg = validateBeforeCalculate();
+    if (msg) {
+      setErrorMsg(msg);
+      return;
+    }
+    setErrorMsg(null);
+    onCalculate();
+  };
+
+  const handleExportExcel = () => {
+    const baseName = inputs.assetName.trim() || tabLabel;
+    exportScheduleToXlsx(
+      schedule,
+      {
+        colPeriod: c("colPeriod"),
+        colRou: c("colRou"),
+        colInterest: c("colInterest"),
+        colPayment: c("colPayment"),
+        colDeprn: c("colDeprn"),
+        colCurrentLiab: c("colCurrentLiab"),
+        colNonCurrentLiab: c("colNonCurrentLiab"),
+        colTotalLiab: c("colTotalLiab"),
+        subtotal: c("subtotal"),
+      },
+      baseName
+    );
+  };
+
   return (
     <div className="calculator-grid">
       <section className="calculator-panel calculator-panel--input">
         <h2>{c("inputTitle")}</h2>
 
+        { /* input form */}
+        {errorMsg && (
+          <div style={{ color: "var(--color-orange)", fontSize: 12, marginBottom: 12 }}>
+            {errorMsg}
+          </div>
+        )}
         <div className="calculator-field">
           <label>{c("assetName")}</label>
           <input
             type="text"
-            placeholder="e.g. Genesis G80"
             value={inputs.assetName}
             onChange={(e) => onInputChange("assetName", e.target.value)}
           />
         </div>
-
         <div className="calculator-field">
           <label>{c("commencementDate")}</label>
           <input
@@ -100,10 +151,11 @@ export function LeaseAssetPanel({
         <div className="calculator-field">
           <label>{c("initialCost")}</label>
           <input
-            type="number"
-            min={0}
-            value={numberValue(inputs.initialCost)}
-            onChange={(e) => onInputChange("initialCost", parseNumber(e.target.value))}
+            type="text"
+            readOnly
+            disabled
+            className="calculator-field-input--computed"
+            value={inputs.initialCost === 0 ? "" : formatAmount(inputs.initialCost)}
           />
         </div>
 
@@ -118,7 +170,11 @@ export function LeaseAssetPanel({
           />
         </div>
 
-        <button type="button" className="btn btn-primary calculator-submit">
+        <button
+          type="button"
+          className="btn btn-primary calculator-submit"
+          onClick={handleCalculate}
+        >
           {c("btnCalculate")}
         </button>
       </section>
@@ -129,7 +185,11 @@ export function LeaseAssetPanel({
             {c("tableTitle")}{" "}
             <span className="calculator-table-context">({tabLabel})</span>
           </h2>
-          <button type="button" className="btn calculator-excel-btn">
+          <button
+            type="button"
+            className="btn calculator-excel-btn"
+            onClick={handleExportExcel}
+          >
             {c("btnExcel")}
           </button>
         </div>
