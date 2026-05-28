@@ -2,6 +2,7 @@
 
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { LeaseAssetPanel } from "@/components/calculator/LeaseAssetPanel";
+import { SummaryPortfolioPanel } from "@/components/calculator/SummaryPortfolioPanel";
 import { Footer } from "@/components/landing/Footer";
 import { TopNav } from "@/components/landing/TopNav";
 import type { LeaseAsset, PortfolioTabId } from "@/lib/ifrs16/types";
@@ -84,6 +85,8 @@ export function Ifrs16Portfolio() {
                 {c("btnAddAsset")}
               </button>
             </div>
+
+            {activeTabId === "summary" && <SummaryPortfolioPanel assets={assets} />}
 
             {activeAsset && (
               <LeaseAssetPanel

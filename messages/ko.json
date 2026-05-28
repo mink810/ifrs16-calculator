@@ -81,7 +81,6 @@
     "inputTitle": "리스 계약 정보 입력",
     "assetName": "리스 자산명",
     "commencementDate": "취득일자 (개시일)",
-    "postingDate": "전표일자",
     "initialCost": "최초 취득가액",
     "initialCostPlaceholder": "계산 후 자동 입력",
     "depreciationPeriod": "감가상각기간 (개월)",
@@ -90,7 +89,6 @@
     "rate": "연 내재이자율 (%)",
     "validationAssetNameRequired": "리스 자산명을 입력해 주세요.",
     "validationCommencementDateRequired": "취득일자를 입력해 주세요.",
-    "validationPostingDateRequired": "전표일자를 입력해 주세요.",
     "validationLeaseTermRequired": "리스 기간(개월)을 입력해 주세요.",
     "validationDepreciationPeriodRequired": "감가상각기간(개월)을 입력해 주세요.",
     "validationMonthlyPaymentRequired": "월 리스료를 입력해 주세요.",
@@ -106,6 +104,7 @@
     "colCurrentLiab": "단기 리스부채",
     "colNonCurrentLiab": "장기 리스부채",
     "colTotalLiab": "리스부채 총 잔액",
+    "summaryEmpty": "요약을 표시할 계산된 자산 데이터가 없습니다.",
     "subtotal": "분기 소계",
     "tip": "💡 <strong>최초 취득 및 중간 매각 전표:</strong> 최초 취득 시점의 인식 분개 및 계약 변경/중간 해지에 따른 처분손익 추적은 상단 탭에서 관리할 수 있습니다."
   }

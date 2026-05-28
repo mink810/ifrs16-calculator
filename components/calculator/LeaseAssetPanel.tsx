@@ -36,10 +36,25 @@ export function LeaseAssetPanel({
 
   const numberValue = (n: number) => (n === 0 ? "" : n);
 
+  const formatPeriodLabel = (seq: number) => {
+    const [yearText, monthText] = inputs.commencementDate.split("-");
+    const startYear = Number(yearText);
+    const startMonth = Number(monthText);
+
+    if (!Number.isInteger(startYear) || !Number.isInteger(startMonth) || startMonth < 1 || startMonth > 12) {
+      return String(seq);
+    }
+
+    const monthOffset = seq - 1;
+    const totalMonths = startYear * 12 + (startMonth - 1) + monthOffset;
+    const year = Math.floor(totalMonths / 12);
+    const month = (totalMonths % 12) + 1;
+    return `${year}-${String(month).padStart(2, "0")}`;
+  };
+
   const validateBeforeCalculate = (): string | null => {
     if (!inputs.assetName.trim()) return c("validationAssetNameRequired");
     if (!inputs.commencementDate.trim()) return c("validationCommencementDateRequired");
-    if (!inputs.postingDate.trim()) return c("validationPostingDateRequired");
     if (inputs.leaseTerm <= 0) return c("validationLeaseTermRequired");
     if (inputs.depreciationPeriod <= 0)
       return c("validationDepreciationPeriodRequired");
@@ -71,9 +86,9 @@ export function LeaseAssetPanel({
         colCurrentLiab: c("colCurrentLiab"),
         colNonCurrentLiab: c("colNonCurrentLiab"),
         colTotalLiab: c("colTotalLiab"),
-        subtotal: c("subtotal"),
       },
-      baseName
+      baseName,
+      inputs.commencementDate
     );
   };
 
@@ -105,16 +120,6 @@ export function LeaseAssetPanel({
             onChange={(e) => onInputChange("commencementDate", e.target.value)}
           />
         </div>
-        <div className="calculator-field">
-          <label>{c("postingDate")}</label>
-          <input
-            type="date"
-            suppressHydrationWarning
-            value={inputs.postingDate}
-            onChange={(e) => onInputChange("postingDate", e.target.value)}
-          />
-        </div>
-
         <div className="calculator-field-row">
           <div className="calculator-field">
             <label>{c("period")}</label>
@@ -214,27 +219,12 @@ export function LeaseAssetPanel({
               </tr>
             </thead>
             <tbody>
-              {schedule.map((row, idx) => {
-                if (row.kind === "subtotal") {
+              {schedule
+                .filter((row) => row.kind === "period")
+                .map((row) => {
                   return (
-                    <tr key={`sub-${row.quarter}-${idx}`} className="row-subtotal">
-                      <td>
-                        {row.quarter}Q {c("subtotal")}
-                      </td>
-                      <td className="muted">-</td>
-                      <td className="accent-interest">{formatAmount(row.interest)}</td>
-                      <td>{formatAmount(row.payment)}</td>
-                      <td className="accent-deprn">{formatAmount(row.deprn)}</td>
-                      <td className="muted">-</td>
-                      <td className="muted">-</td>
-                      <td className="muted">-</td>
-                    </tr>
-                  );
-                }
-
-                return (
                   <tr key={`row-${row.seq}`}>
-                    <td className="col-period">{row.seq}</td>
+                    <td className="col-period">{formatPeriodLabel(row.seq)}</td>
                     <td>{formatAmount(row.rou)}</td>
                     <td className="accent-interest">{formatAmount(row.interest)}</td>
                     <td>{formatAmount(row.payment)}</td>

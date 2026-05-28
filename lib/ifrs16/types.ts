@@ -1,7 +1,6 @@
 export type LeaseInputs = {
   assetName: string;
   commencementDate: string;
-  postingDate: string;
   leaseTerm: number;
   depreciationPeriod: number;
   monthlyPayment: number;

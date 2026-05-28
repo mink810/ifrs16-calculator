@@ -81,7 +81,6 @@
     "inputTitle": "Lease Input Portfolio",
     "assetName": "Asset Name",
     "commencementDate": "Commencement Date",
-    "postingDate": "Posting Date",
     "initialCost": "Initial Cost of ROU Asset",
     "initialCostPlaceholder": "Calculated on save",
     "depreciationPeriod": "Depreciation Period (Months)",
@@ -90,7 +89,6 @@
     "rate": "Annual Implicit Rate (%)",
     "validationAssetNameRequired": "Please enter the asset name.",
     "validationCommencementDateRequired": "Please enter the commencement date.",
-    "validationPostingDateRequired": "Please enter the posting date.",
     "validationLeaseTermRequired": "Please enter the lease period (months).",
     "validationDepreciationPeriodRequired": "Please enter the depreciation period (months).",
     "validationMonthlyPaymentRequired": "Please enter the monthly payment.",
@@ -106,6 +104,7 @@
     "colCurrentLiab": "Current Liability",
     "colNonCurrentLiab": "Non-current Liability",
     "colTotalLiab": "Total Liability",
+    "summaryEmpty": "No calculated asset data available for summary.",
     "subtotal": "Q Subtotal",
     "tip": "💡 <strong>Initial & Termination J/E:</strong> Initial recognition and modification/termination gain or loss tracking can be managed via the tabs above."
   }

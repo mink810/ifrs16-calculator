@@ -3,21 +3,9 @@ import { calculateRouAsset } from "@/lib/ifrs16/calculate-rou-asset";
 import { calculateSchedule } from "@/lib/ifrs16/calculate-schedule";
 import type { LeaseAsset, LeaseInputs, PortfolioTabId } from "@/lib/ifrs16/types";
 
-export const defaultLeaseInputs: LeaseInputs = {
-  assetName: "",
-  commencementDate: "2024-01-01",
-  postingDate: "2024-01-01",
-  leaseTerm: 60,
-  depreciationPeriod: 60,
-  monthlyPayment: 800_000,
-  initialCost: 42_000_000,
-  annualRate: 5,
-};
-
 export const emptyLeaseInputs: LeaseInputs = {
   assetName: "",
   commencementDate: "",
-  postingDate: "",
   leaseTerm: 0,
   depreciationPeriod: 0,
   monthlyPayment: 0,
