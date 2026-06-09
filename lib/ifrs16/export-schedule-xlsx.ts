@@ -54,14 +54,17 @@ function scheduleRowToCells(row: LeasePeriodRow, commencementDate: string): (str
   ];
 }
 
-function sanitizeFilename(name: string): string {
-  return name.replace(/[<>:"/\\|?*\x00-\x1f]/g, "_").trim() || "lease-schedule";
+function buildExportFilename(): string {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, "0");
+  const d = String(today.getDate()).padStart(2, "0");
+  return `Lease accounting schedule_${y}-${m}-${d}.xlsx`;
 }
 
 export function exportScheduleToXlsx(
   schedule: LeaseScheduleRow[],
   labels: ScheduleExportLabels,
-  baseName: string,
   commencementDate: string
 ): void {
   const headers = [
@@ -82,14 +85,12 @@ export function exportScheduleToXlsx(
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Schedule");
 
-  const filename = `${sanitizeFilename(baseName)}.xlsx`;
-  XLSX.writeFile(workbook, filename);
+  XLSX.writeFile(workbook, buildExportFilename());
 }
 
 export function exportSummaryScheduleToXlsx(
   rows: SummaryScheduleExportRow[],
-  labels: ScheduleExportLabels,
-  baseName: string
+  labels: ScheduleExportLabels
 ): void {
   const headers = [
     labels.colPeriod,
@@ -117,6 +118,5 @@ export function exportSummaryScheduleToXlsx(
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Summary");
 
-  const filename = `${sanitizeFilename(baseName)}.xlsx`;
-  XLSX.writeFile(workbook, filename);
+  XLSX.writeFile(workbook, buildExportFilename());
 }

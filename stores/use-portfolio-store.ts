@@ -7,7 +7,6 @@ export const emptyLeaseInputs: LeaseInputs = {
   assetName: "",
   commencementDate: "",
   leaseTerm: 0,
-  depreciationPeriod: 0,
   monthlyPayment: 0,
   initialCost: 0,
   annualRate: 0,

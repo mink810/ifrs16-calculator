@@ -56,8 +56,6 @@ export function LeaseAssetPanel({
     if (!inputs.assetName.trim()) return c("validationAssetNameRequired");
     if (!inputs.commencementDate.trim()) return c("validationCommencementDateRequired");
     if (inputs.leaseTerm <= 0) return c("validationLeaseTermRequired");
-    if (inputs.depreciationPeriod <= 0)
-      return c("validationDepreciationPeriodRequired");
     if (inputs.monthlyPayment <= 0) return c("validationMonthlyPaymentRequired");
     if (inputs.annualRate < 0) return c("validationAnnualRateInvalid");
     return null;
@@ -74,7 +72,6 @@ export function LeaseAssetPanel({
   };
 
   const handleExportExcel = () => {
-    const baseName = inputs.assetName.trim() || tabLabel;
     exportScheduleToXlsx(
       schedule,
       {
@@ -87,7 +84,6 @@ export function LeaseAssetPanel({
         colNonCurrentLiab: c("colNonCurrentLiab"),
         colTotalLiab: c("colTotalLiab"),
       },
-      baseName,
       inputs.commencementDate
     );
   };
@@ -120,27 +116,14 @@ export function LeaseAssetPanel({
             onChange={(e) => onInputChange("commencementDate", e.target.value)}
           />
         </div>
-        <div className="calculator-field-row">
-          <div className="calculator-field">
-            <label>{c("period")}</label>
-            <input
-              type="number"
-              min={1}
-              value={numberValue(inputs.leaseTerm)}
-              onChange={(e) => onInputChange("leaseTerm", parseNumber(e.target.value))}
-            />
-          </div>
-          <div className="calculator-field">
-            <label>{c("depreciationPeriod")}</label>
-            <input
-              type="number"
-              min={1}
-              value={numberValue(inputs.depreciationPeriod)}
-              onChange={(e) =>
-                onInputChange("depreciationPeriod", parseNumber(e.target.value))
-              }
-            />
-          </div>
+        <div className="calculator-field">
+          <label>{c("period")}</label>
+          <input
+            type="number"
+            min={1}
+            value={numberValue(inputs.leaseTerm)}
+            onChange={(e) => onInputChange("leaseTerm", parseNumber(e.target.value))}
+          />
         </div>
 
         <div className="calculator-field">

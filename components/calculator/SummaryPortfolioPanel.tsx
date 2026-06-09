@@ -111,20 +111,16 @@ export function SummaryPortfolioPanel({ assets }: SummaryPortfolioPanelProps) {
   }, [assets]);
 
   const handleExportExcel = () => {
-    exportSummaryScheduleToXlsx(
-      rows,
-      {
-        colPeriod: c("colPeriod"),
-        colRou: c("colRou"),
-        colInterest: c("colInterest"),
-        colPayment: c("colPayment"),
-        colDeprn: c("colDeprn"),
-        colCurrentLiab: c("colCurrentLiab"),
-        colNonCurrentLiab: c("colNonCurrentLiab"),
-        colTotalLiab: c("colTotalLiab"),
-      },
-      c("tabSummary")
-    );
+    exportSummaryScheduleToXlsx(rows, {
+      colPeriod: c("colPeriod"),
+      colRou: c("colRou"),
+      colInterest: c("colInterest"),
+      colPayment: c("colPayment"),
+      colDeprn: c("colDeprn"),
+      colCurrentLiab: c("colCurrentLiab"),
+      colNonCurrentLiab: c("colNonCurrentLiab"),
+      colTotalLiab: c("colTotalLiab"),
+    });
   };
 
   return (

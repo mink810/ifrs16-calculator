@@ -4,11 +4,10 @@ type PeriodCalc = LeasePeriodRow & { principal: number };
 
 function buildPeriods(inputs: LeaseInputs): PeriodCalc[] {
   const leaseTerm = Math.max(0, Math.floor(inputs.leaseTerm));
-  const depreciationPeriod = Math.max(1, Math.floor(inputs.depreciationPeriod));
   const monthlyPayment = Math.max(0, inputs.monthlyPayment);
   const initialCost = Math.max(0, inputs.initialCost);
   const monthlyRate = Math.max(0, inputs.annualRate) / 100 / 12;
-  const monthlyDeprn = initialCost / depreciationPeriod;
+  const monthlyDeprn = leaseTerm > 0 ? initialCost / leaseTerm : 0;
 
   const periods: PeriodCalc[] = [];
   let liability = initialCost;
