@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { LeaseAssetPanel } from "@/components/calculator/LeaseAssetPanel";
+import { PeriodViewToggle } from "@/components/calculator/PeriodViewToggle";
 import { SummaryPortfolioPanel } from "@/components/calculator/SummaryPortfolioPanel";
+import type { PeriodViewMode } from "@/lib/ifrs16/period-view";
 import { Footer } from "@/components/landing/Footer";
 import { TopNav } from "@/components/landing/TopNav";
 import type { LeaseAsset, PortfolioTabId } from "@/lib/ifrs16/types";
@@ -13,6 +16,7 @@ export function Ifrs16Portfolio() {
   const c = (key: string) => t(`calculator.${key}`);
   const { assets, activeTabId, addAsset, removeAsset, setActiveTab, setInput, calculateAsset } =
     usePortfolioStore();
+  const [periodView, setPeriodView] = useState<PeriodViewMode>("monthly");
 
   const activeAsset = assets.find((asset) => asset.id === activeTabId);
 
@@ -40,7 +44,17 @@ export function Ifrs16Portfolio() {
             <h1>{c("title")}</h1>
             <p>{c("subtitle")}</p>
           </header>
-          
+
+          <div className="calculator-workspace-toolbar">
+            <PeriodViewToggle
+              value={periodView}
+              monthlyLabel={c("periodViewMonthly")}
+              dailyLabel={c("periodViewDaily")}
+              ariaLabel={c("periodViewLabel")}
+              onChange={setPeriodView}
+            />
+          </div>
+
           <div className="calculator-workspace">
             {/* 탭 목록 */}
             <div className="calculator-tabs" role="tablist" aria-label={c("title")}>   
@@ -86,7 +100,13 @@ export function Ifrs16Portfolio() {
               </button>
             </div>
 
-            {activeTabId === "summary" && <SummaryPortfolioPanel assets={assets} />}
+            {activeTabId === "summary" && (
+              <SummaryPortfolioPanel
+                assets={assets}
+                periodView={periodView}
+                assetLabel={assetTabLabel}
+              />
+            )}
 
             {activeAsset && (
               <LeaseAssetPanel
@@ -96,6 +116,7 @@ export function Ifrs16Portfolio() {
                 )}
                 inputs={activeAsset.inputs}
                 schedule={activeAsset.schedule}
+                periodView={periodView}
                 onInputChange={(key, value) => setInput(activeAsset.id, key, value)}
                 onCalculate={() => calculateAsset(activeAsset.id)}
               />

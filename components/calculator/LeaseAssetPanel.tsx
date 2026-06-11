@@ -1,15 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { exportScheduleToXlsx } from "@/lib/ifrs16/export-schedule-xlsx";
 import { formatAmount } from "@/lib/ifrs16/format";
+import { expandAssetScheduleToDisplayRows, type PeriodViewMode } from "@/lib/ifrs16/period-view";
 import type { LeaseInputs, LeaseScheduleRow } from "@/lib/ifrs16/types";
 
 type LeaseAssetPanelProps = {
   tabLabel: string;
   inputs: LeaseInputs;
   schedule: LeaseScheduleRow[];
+  periodView: PeriodViewMode;
   onInputChange: <K extends keyof LeaseInputs>(
     key: K,
     value: LeaseInputs[K]
@@ -21,6 +23,7 @@ export function LeaseAssetPanel({
   tabLabel,
   inputs,
   schedule,
+  periodView,
   onInputChange,
   onCalculate,
 }: LeaseAssetPanelProps) {
@@ -36,21 +39,10 @@ export function LeaseAssetPanel({
 
   const numberValue = (n: number) => (n === 0 ? "" : n);
 
-  const formatPeriodLabel = (seq: number) => {
-    const [yearText, monthText] = inputs.commencementDate.split("-");
-    const startYear = Number(yearText);
-    const startMonth = Number(monthText);
-
-    if (!Number.isInteger(startYear) || !Number.isInteger(startMonth) || startMonth < 1 || startMonth > 12) {
-      return String(seq);
-    }
-
-    const monthOffset = seq - 1;
-    const totalMonths = startYear * 12 + (startMonth - 1) + monthOffset;
-    const year = Math.floor(totalMonths / 12);
-    const month = (totalMonths % 12) + 1;
-    return `${year}-${String(month).padStart(2, "0")}`;
-  };
+  const displayRows = useMemo(
+    () => expandAssetScheduleToDisplayRows(schedule, inputs.commencementDate, periodView),
+    [schedule, inputs.commencementDate, periodView]
+  );
 
   const validateBeforeCalculate = (): string | null => {
     if (!inputs.assetName.trim()) return c("validationAssetNameRequired");
@@ -84,7 +76,8 @@ export function LeaseAssetPanel({
         colNonCurrentLiab: c("colNonCurrentLiab"),
         colTotalLiab: c("colTotalLiab"),
       },
-      inputs.commencementDate
+      inputs.commencementDate,
+      periodView
     );
   };
 
@@ -202,24 +195,18 @@ export function LeaseAssetPanel({
               </tr>
             </thead>
             <tbody>
-              {schedule
-                .filter((row) => row.kind === "period")
-                .map((row) => {
-                  return (
-                  <tr key={`row-${row.seq}`}>
-                    <td className="col-period">{formatPeriodLabel(row.seq)}</td>
-                    <td>{formatAmount(row.rou)}</td>
-                    <td className="accent-interest">{formatAmount(row.interest)}</td>
-                    <td>{formatAmount(row.payment)}</td>
-                    <td className="accent-deprn">{formatAmount(row.deprn)}</td>
-                    <td className="col-current">{formatAmount(row.currentLiability)}</td>
-                    <td className="col-noncurrent">
-                      {formatAmount(row.nonCurrentLiability)}
-                    </td>
-                    <td className="col-total">{formatAmount(row.totalLiability)}</td>
-                  </tr>
-                );
-              })}
+              {displayRows.map((row) => (
+                <tr key={`row-${row.period}`}>
+                  <td className="col-period">{row.period}</td>
+                  <td>{formatAmount(row.rou)}</td>
+                  <td className="accent-interest">{formatAmount(row.interest)}</td>
+                  <td>{formatAmount(row.payment)}</td>
+                  <td className="accent-deprn">{formatAmount(row.deprn)}</td>
+                  <td className="col-current">{formatAmount(row.currentLiability)}</td>
+                  <td className="col-noncurrent">{formatAmount(row.nonCurrentLiability)}</td>
+                  <td className="col-total">{formatAmount(row.totalLiability)}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
