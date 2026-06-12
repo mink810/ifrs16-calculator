@@ -5,6 +5,7 @@ export type PeriodViewMode = "monthly" | "daily";
 export type DisplayScheduleRow = {
   period: string;
   rou: number;
+  accumulatedDepreciation: number;
   interest: number;
   payment: number;
   deprn: number;
@@ -13,10 +14,7 @@ export type DisplayScheduleRow = {
   totalLiability: number;
 };
 
-export type SummaryDisplayRow = DisplayScheduleRow & {
-  assetId: string;
-  assetName: string;
-};
+export type SummaryDisplayRow = DisplayScheduleRow;
 
 export function parseStartYearMonth(
   commencementDate: string
@@ -56,10 +54,6 @@ export function daysInMonth(year: number, month: number): number {
   return new Date(year, month, 0).getDate();
 }
 
-export function formatDateLabel(year: number, month: number, day: number): string {
-  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-}
-
 export function formatMonthlyPeriodLabel(commencementDate: string, seq: number): string {
   const monthIndex = seqToMonthIndex(commencementDate, seq);
   if (monthIndex === null) return String(seq);
@@ -77,6 +71,7 @@ function periodRowToDisplayRow(
   return {
     period,
     rou: row.rou,
+    accumulatedDepreciation: row.accumulatedDepreciation,
     interest: row.interest,
     payment: row.payment,
     deprn: row.deprn,
@@ -86,82 +81,69 @@ function periodRowToDisplayRow(
   };
 }
 
-function expandPeriodRowToDailyRows(
-  row: LeasePeriodRow,
-  commencementDate: string
-): DisplayScheduleRow[] {
-  const monthIndex = seqToMonthIndex(commencementDate, row.seq);
-  if (monthIndex === null) {
-    return [periodRowToDisplayRow(row, String(row.seq))];
-  }
-
-  const { year, month } = monthIndexToYearMonth(monthIndex);
-  const days = daysInMonth(year, month);
-  const dailyInterest = row.interest / days;
-  const dailyPayment = row.payment / days;
-  const dailyDeprn = row.deprn / days;
-
-  const rows: DisplayScheduleRow[] = [];
-  for (let day = 1; day <= days; day++) {
-    rows.push({
-      period: formatDateLabel(year, month, day),
-      rou: row.rou,
-      interest: dailyInterest,
-      payment: dailyPayment,
-      deprn: dailyDeprn,
-      currentLiability: row.currentLiability,
-      nonCurrentLiability: row.nonCurrentLiability,
-      totalLiability: row.totalLiability,
-    });
-  }
-  return rows;
-}
-
 export function expandAssetScheduleToDisplayRows(
   schedule: LeaseScheduleRow[],
-  commencementDate: string,
-  mode: PeriodViewMode
+  commencementDate: string
 ): DisplayScheduleRow[] {
-  const periodRows = toPeriodRows(schedule);
-
-  if (mode === "monthly") {
-    return periodRows.map((row) =>
-      periodRowToDisplayRow(row, formatMonthlyPeriodLabel(commencementDate, row.seq))
-    );
-  }
-
-  return periodRows.flatMap((row) => expandPeriodRowToDailyRows(row, commencementDate));
+  return toPeriodRows(schedule).map((row) =>
+    periodRowToDisplayRow(row, formatMonthlyPeriodLabel(commencementDate, row.seq))
+  );
 }
 
-export function buildSummaryDisplayRows(
-  assets: LeaseAsset[],
-  mode: PeriodViewMode,
-  assetLabel: (asset: LeaseAsset, index: number) => string
-): SummaryDisplayRow[] {
-  const rows: SummaryDisplayRow[] = [];
+function emptyAggregate(): Omit<DisplayScheduleRow, "period"> {
+  return {
+    rou: 0,
+    accumulatedDepreciation: 0,
+    interest: 0,
+    payment: 0,
+    deprn: 0,
+    currentLiability: 0,
+    nonCurrentLiability: 0,
+    totalLiability: 0,
+  };
+}
 
-  assets.forEach((asset, index) => {
-    if (!parseStartYearMonth(asset.inputs.commencementDate)) return;
+function addToAggregate(
+  target: Omit<DisplayScheduleRow, "period">,
+  source: Omit<DisplayScheduleRow, "period">
+) {
+  target.rou += source.rou;
+  target.accumulatedDepreciation += source.accumulatedDepreciation;
+  target.interest += source.interest;
+  target.payment += source.payment;
+  target.deprn += source.deprn;
+  target.currentLiability += source.currentLiability;
+  target.nonCurrentLiability += source.nonCurrentLiability;
+  target.totalLiability += source.totalLiability;
+}
 
-    const assetName = assetLabel(asset, index);
+export function buildSummaryDisplayRows(assets: LeaseAsset[]): SummaryDisplayRow[] {
+  const activeAssets = assets.filter((asset) =>
+    parseStartYearMonth(asset.inputs.commencementDate)
+  );
+  if (activeAssets.length === 0) return [];
+
+  const periodMap = new Map<string, Omit<DisplayScheduleRow, "period">>();
+  const periodKeys: string[] = [];
+
+  for (const asset of activeAssets) {
     const displayRows = expandAssetScheduleToDisplayRows(
       asset.schedule,
-      asset.inputs.commencementDate,
-      mode
+      asset.inputs.commencementDate
     );
 
     for (const row of displayRows) {
-      rows.push({
-        ...row,
-        assetId: asset.id,
-        assetName,
-      });
+      if (!periodMap.has(row.period)) {
+        periodMap.set(row.period, emptyAggregate());
+        periodKeys.push(row.period);
+      }
+      addToAggregate(periodMap.get(row.period)!, row);
     }
-  });
+  }
 
-  return rows.sort((a, b) => {
-    const periodCmp = a.period.localeCompare(b.period);
-    if (periodCmp !== 0) return periodCmp;
-    return a.assetName.localeCompare(b.assetName);
-  });
+  periodKeys.sort();
+  return periodKeys.map((period) => ({
+    period,
+    ...(periodMap.get(period) ?? emptyAggregate()),
+  }));
 }

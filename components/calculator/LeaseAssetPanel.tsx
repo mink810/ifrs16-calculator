@@ -1,17 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { LocaleDateField } from "@/components/calculator/LocaleDateField";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { exportScheduleToXlsx } from "@/lib/ifrs16/export-schedule-xlsx";
 import { formatAmount } from "@/lib/ifrs16/format";
-import { expandAssetScheduleToDisplayRows, type PeriodViewMode } from "@/lib/ifrs16/period-view";
+import { expandAssetScheduleToDisplayRows } from "@/lib/ifrs16/period-view";
 import type { LeaseInputs, LeaseScheduleRow } from "@/lib/ifrs16/types";
 
 type LeaseAssetPanelProps = {
   tabLabel: string;
   inputs: LeaseInputs;
   schedule: LeaseScheduleRow[];
-  periodView: PeriodViewMode;
   onInputChange: <K extends keyof LeaseInputs>(
     key: K,
     value: LeaseInputs[K]
@@ -23,7 +23,6 @@ export function LeaseAssetPanel({
   tabLabel,
   inputs,
   schedule,
-  periodView,
   onInputChange,
   onCalculate,
 }: LeaseAssetPanelProps) {
@@ -40,8 +39,8 @@ export function LeaseAssetPanel({
   const numberValue = (n: number) => (n === 0 ? "" : n);
 
   const displayRows = useMemo(
-    () => expandAssetScheduleToDisplayRows(schedule, inputs.commencementDate, periodView),
-    [schedule, inputs.commencementDate, periodView]
+    () => expandAssetScheduleToDisplayRows(schedule, inputs.commencementDate),
+    [schedule, inputs.commencementDate]
   );
 
   const validateBeforeCalculate = (): string | null => {
@@ -69,6 +68,7 @@ export function LeaseAssetPanel({
       {
         colPeriod: c("colPeriod"),
         colRou: c("colRou"),
+        colAccumulatedDepreciation: c("colAccumulatedDepreciation"),
         colInterest: c("colInterest"),
         colPayment: c("colPayment"),
         colDeprn: c("colDeprn"),
@@ -76,8 +76,7 @@ export function LeaseAssetPanel({
         colNonCurrentLiab: c("colNonCurrentLiab"),
         colTotalLiab: c("colTotalLiab"),
       },
-      inputs.commencementDate,
-      periodView
+      inputs.commencementDate
     );
   };
 
@@ -102,11 +101,9 @@ export function LeaseAssetPanel({
         </div>
         <div className="calculator-field">
           <label>{c("commencementDate")}</label>
-          <input
-            type="date"
-            suppressHydrationWarning
+          <LocaleDateField
             value={inputs.commencementDate}
-            onChange={(e) => onInputChange("commencementDate", e.target.value)}
+            onChange={(next) => onInputChange("commencementDate", next)}
           />
         </div>
         <div className="calculator-field">
@@ -186,6 +183,7 @@ export function LeaseAssetPanel({
               <tr>
                 <th className="col-period">{c("colPeriod")}</th>
                 <th>{c("colRou")}</th>
+                <th>{c("colAccumulatedDepreciation")}</th>
                 <th>{c("colInterest")}</th>
                 <th>{c("colPayment")}</th>
                 <th>{c("colDeprn")}</th>
@@ -199,6 +197,7 @@ export function LeaseAssetPanel({
                 <tr key={`row-${row.period}`}>
                   <td className="col-period">{row.period}</td>
                   <td>{formatAmount(row.rou)}</td>
+                  <td className="accent-deprn">{formatAmount(row.accumulatedDepreciation)}</td>
                   <td className="accent-interest">{formatAmount(row.interest)}</td>
                   <td>{formatAmount(row.payment)}</td>
                   <td className="accent-deprn">{formatAmount(row.deprn)}</td>

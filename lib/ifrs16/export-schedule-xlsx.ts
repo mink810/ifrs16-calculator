@@ -1,15 +1,12 @@
 import * as XLSX from "xlsx-js-style";
-import {
-  expandAssetScheduleToDisplayRows,
-  type PeriodViewMode,
-  type SummaryDisplayRow,
-} from "./period-view";
+import { expandAssetScheduleToDisplayRows, type SummaryDisplayRow } from "./period-view";
 import type { LeaseScheduleRow } from "./types";
 
 export type ScheduleExportLabels = {
   colPeriod: string;
   colAsset?: string;
   colRou: string;
+  colAccumulatedDepreciation: string;
   colInterest: string;
   colPayment: string;
   colDeprn: string;
@@ -109,12 +106,12 @@ function downloadWorkbook(worksheet: XLSX.WorkSheet, sheetName: string) {
 export function exportScheduleToXlsx(
   schedule: LeaseScheduleRow[],
   labels: ScheduleExportLabels,
-  commencementDate: string,
-  periodView: PeriodViewMode = "monthly"
+  commencementDate: string
 ): void {
   const headers = [
     labels.colPeriod,
     labels.colRou,
+    labels.colAccumulatedDepreciation,
     labels.colInterest,
     labels.colPayment,
     labels.colDeprn,
@@ -123,10 +120,11 @@ export function exportScheduleToXlsx(
     labels.colTotalLiab,
   ];
 
-  const bodyRows = expandAssetScheduleToDisplayRows(schedule, commencementDate, periodView).map(
+  const bodyRows = expandAssetScheduleToDisplayRows(schedule, commencementDate).map(
     (row) => [
       row.period,
       row.rou,
+      row.accumulatedDepreciation,
       row.interest,
       row.payment,
       row.deprn,
@@ -136,7 +134,7 @@ export function exportScheduleToXlsx(
     ]
   );
 
-  const worksheet = createStyledWorksheet([headers, ...bodyRows], 1, 7);
+  const worksheet = createStyledWorksheet([headers, ...bodyRows], 1, 8);
   downloadWorkbook(worksheet, "Schedule");
 }
 
@@ -146,8 +144,8 @@ export function exportSummaryScheduleToXlsx(
 ): void {
   const headers = [
     labels.colPeriod,
-    labels.colAsset ?? "Asset",
     labels.colRou,
+    labels.colAccumulatedDepreciation,
     labels.colInterest,
     labels.colPayment,
     labels.colDeprn,
@@ -158,8 +156,8 @@ export function exportSummaryScheduleToXlsx(
 
   const bodyRows = rows.map((row) => [
     row.period,
-    row.assetName,
     row.rou,
+    row.accumulatedDepreciation,
     row.interest,
     row.payment,
     row.deprn,
@@ -168,6 +166,6 @@ export function exportSummaryScheduleToXlsx(
     row.totalLiability,
   ]);
 
-  const worksheet = createStyledWorksheet([headers, ...bodyRows], 2, 8);
+  const worksheet = createStyledWorksheet([headers, ...bodyRows], 1, 8);
   downloadWorkbook(worksheet, "Summary");
 }

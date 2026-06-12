@@ -1,8 +1,13 @@
+import { getProrationFactor } from "./proration";
+import type { PeriodViewMode } from "./period-view";
 import type { LeaseInputs, LeasePeriodRow, LeaseScheduleRow } from "./types";
 
 type PeriodCalc = LeasePeriodRow & { principal: number };
 
-function buildPeriods(inputs: LeaseInputs): PeriodCalc[] {
+function buildPeriods(
+  inputs: LeaseInputs,
+  prorationMode: PeriodViewMode
+): PeriodCalc[] {
   const leaseTerm = Math.max(0, Math.floor(inputs.leaseTerm));
   const monthlyPayment = Math.max(0, inputs.monthlyPayment);
   const initialCost = Math.max(0, inputs.initialCost);
@@ -11,24 +16,32 @@ function buildPeriods(inputs: LeaseInputs): PeriodCalc[] {
 
   const periods: PeriodCalc[] = [];
   let liability = initialCost;
-  let rou = initialCost;
+  let accumulatedDepreciation = 0;
 
   for (let seq = 1; seq <= leaseTerm; seq++) {
-    const openingRou = rou;
-    const interest = liability * monthlyRate;
-    const principal = monthlyPayment - interest;
-    const payment = monthlyPayment;
+    const factor = getProrationFactor(
+      inputs.commencementDate,
+      seq,
+      leaseTerm,
+      prorationMode
+    );
+
+    const interest = liability * monthlyRate * factor;
+    const payment = monthlyPayment * factor;
+    const principal = payment - interest;
+    const deprn = monthlyDeprn * factor;
 
     liability = Math.max(0, liability - principal);
-    rou = Math.max(0, rou - monthlyDeprn);
+    accumulatedDepreciation += deprn;
 
     periods.push({
       kind: "period",
       seq,
-      rou: openingRou,
+      rou: initialCost,
+      accumulatedDepreciation,
       interest,
       payment,
-      deprn: monthlyDeprn,
+      deprn,
       principal,
       totalLiability: liability,
       currentLiability: 0,
@@ -52,8 +65,11 @@ function buildPeriods(inputs: LeaseInputs): PeriodCalc[] {
   return periods;
 }
 
-export function calculateSchedule(inputs: LeaseInputs): LeaseScheduleRow[] {
-  const periods = buildPeriods(inputs);
+export function calculateSchedule(
+  inputs: LeaseInputs,
+  prorationMode: PeriodViewMode = "monthly"
+): LeaseScheduleRow[] {
+  const periods = buildPeriods(inputs, prorationMode);
   const rows: LeaseScheduleRow[] = [];
 
   let quarterInterest = 0;
@@ -65,6 +81,7 @@ export function calculateSchedule(inputs: LeaseInputs): LeaseScheduleRow[] {
       kind: "period",
       seq: period.seq,
       rou: period.rou,
+      accumulatedDepreciation: period.accumulatedDepreciation,
       interest: period.interest,
       payment: period.payment,
       deprn: period.deprn,

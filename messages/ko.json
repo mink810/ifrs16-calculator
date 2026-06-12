@@ -100,6 +100,7 @@
     "colPeriod": "회차",
     "colAsset": "자산",
     "colRou": "사용권자산 (ROU Asset)",
+    "colAccumulatedDepreciation": "감가상각 누계액",
     "colInterest": "이자비용",
     "colPayment": "리스료 지급",
     "colDeprn": "감가상각비",

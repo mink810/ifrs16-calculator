@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { calculateRouAsset } from "@/lib/ifrs16/calculate-rou-asset";
 import { calculateSchedule } from "@/lib/ifrs16/calculate-schedule";
+import type { PeriodViewMode } from "@/lib/ifrs16/period-view";
 import type { LeaseAsset, LeaseInputs, PortfolioTabId } from "@/lib/ifrs16/types";
 
 export const emptyLeaseInputs: LeaseInputs = {
@@ -12,24 +13,28 @@ export const emptyLeaseInputs: LeaseInputs = {
   annualRate: 0,
 };
 
-function createAsset(inputs: LeaseInputs): LeaseAsset {
+function buildSchedule(inputs: LeaseInputs, prorationMode: PeriodViewMode) {
+  return calculateSchedule(inputs, prorationMode);
+}
+
+function createAsset(inputs: LeaseInputs, prorationMode: PeriodViewMode): LeaseAsset {
   return {
     id: crypto.randomUUID(),
     inputs,
-    schedule: calculateSchedule(inputs),
+    schedule: buildSchedule(inputs, prorationMode),
   };
 }
 
-const initialAssets: LeaseAsset[] = [
-  createAsset({ ...emptyLeaseInputs }),
-];
+const initialAssets: LeaseAsset[] = [createAsset({ ...emptyLeaseInputs }, "monthly")];
 
 type PortfolioState = {
   assets: LeaseAsset[];
   activeTabId: PortfolioTabId;
+  periodView: PeriodViewMode;
   addAsset: () => void;
   removeAsset: (assetId: string) => void;
   setActiveTab: (tabId: PortfolioTabId) => void;
+  setPeriodView: (mode: PeriodViewMode) => void;
   setInput: <K extends keyof LeaseInputs>(
     assetId: string,
     key: K,
@@ -41,9 +46,10 @@ type PortfolioState = {
 export const usePortfolioStore = create<PortfolioState>((set) => ({
   assets: initialAssets,
   activeTabId: initialAssets[0]?.id ?? "summary",
+  periodView: "monthly",
   addAsset: () =>
     set((state) => {
-      const asset = createAsset({ ...emptyLeaseInputs });
+      const asset = createAsset({ ...emptyLeaseInputs }, state.periodView);
       return { assets: [...state.assets, asset], activeTabId: asset.id };
     }),
   removeAsset: (assetId) =>
@@ -64,6 +70,14 @@ export const usePortfolioStore = create<PortfolioState>((set) => ({
       return { assets, activeTabId };
     }),
   setActiveTab: (tabId) => set({ activeTabId: tabId }),
+  setPeriodView: (mode) =>
+    set((state) => ({
+      periodView: mode,
+      assets: state.assets.map((asset) => ({
+        ...asset,
+        schedule: buildSchedule(asset.inputs, mode),
+      })),
+    })),
   setInput: (assetId, key, value) =>
     set((state) => ({
       assets: state.assets.map((asset) => {
@@ -81,7 +95,11 @@ export const usePortfolioStore = create<PortfolioState>((set) => ({
           asset.inputs.annualRate
         );
         const inputs = { ...asset.inputs, initialCost };
-        return { ...asset, inputs, schedule: calculateSchedule(inputs) };
+        return {
+          ...asset,
+          inputs,
+          schedule: buildSchedule(inputs, state.periodView),
+        };
       }),
     })),
 }));

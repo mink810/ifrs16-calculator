@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { LeaseAssetPanel } from "@/components/calculator/LeaseAssetPanel";
 import { PeriodViewToggle } from "@/components/calculator/PeriodViewToggle";
 import { SummaryPortfolioPanel } from "@/components/calculator/SummaryPortfolioPanel";
-import type { PeriodViewMode } from "@/lib/ifrs16/period-view";
 import { Footer } from "@/components/landing/Footer";
 import { TopNav } from "@/components/landing/TopNav";
 import type { LeaseAsset, PortfolioTabId } from "@/lib/ifrs16/types";
@@ -14,9 +12,17 @@ import { usePortfolioStore } from "@/stores/use-portfolio-store";
 export function Ifrs16Portfolio() {
   const { t } = useLocale();
   const c = (key: string) => t(`calculator.${key}`);
-  const { assets, activeTabId, addAsset, removeAsset, setActiveTab, setInput, calculateAsset } =
-    usePortfolioStore();
-  const [periodView, setPeriodView] = useState<PeriodViewMode>("monthly");
+  const {
+    assets,
+    activeTabId,
+    periodView,
+    addAsset,
+    removeAsset,
+    setActiveTab,
+    setInput,
+    setPeriodView,
+    calculateAsset,
+  } = usePortfolioStore();
 
   const activeAsset = assets.find((asset) => asset.id === activeTabId);
 
@@ -100,13 +106,7 @@ export function Ifrs16Portfolio() {
               </button>
             </div>
 
-            {activeTabId === "summary" && (
-              <SummaryPortfolioPanel
-                assets={assets}
-                periodView={periodView}
-                assetLabel={assetTabLabel}
-              />
-            )}
+            {activeTabId === "summary" && <SummaryPortfolioPanel assets={assets} />}
 
             {activeAsset && (
               <LeaseAssetPanel
@@ -116,7 +116,6 @@ export function Ifrs16Portfolio() {
                 )}
                 inputs={activeAsset.inputs}
                 schedule={activeAsset.schedule}
-                periodView={periodView}
                 onInputChange={(key, value) => setInput(activeAsset.id, key, value)}
                 onCalculate={() => calculateAsset(activeAsset.id)}
               />

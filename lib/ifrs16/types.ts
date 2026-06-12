@@ -11,6 +11,7 @@ export type LeasePeriodRow = {
   kind: "period";
   seq: number;
   rou: number;
+  accumulatedDepreciation: number;
   interest: number;
   payment: number;
   deprn: number;
