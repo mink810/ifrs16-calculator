@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
-import { exportSummaryScheduleToXlsx } from "@/lib/ifrs16/export-schedule-xlsx";
+import { exportPortfolioScheduleToXlsx } from "@/lib/ifrs16/export-schedule-xlsx";
 import { formatAmount } from "@/lib/ifrs16/format";
 import { buildSummaryDisplayRows } from "@/lib/ifrs16/period-view";
 import type { LeaseAsset } from "@/lib/ifrs16/types";
@@ -17,8 +17,14 @@ export function SummaryPortfolioPanel({ assets }: SummaryPortfolioPanelProps) {
 
   const rows = useMemo(() => buildSummaryDisplayRows(assets), [assets]);
 
+  const assetTabLabel = (asset: LeaseAsset, index: number) => {
+    const name = asset.inputs.assetName.trim();
+    if (name) return name;
+    return c("tabUntitled").replace("{n}", String(index + 1));
+  };
+
   const handleExportExcel = () => {
-    exportSummaryScheduleToXlsx(rows, {
+    exportPortfolioScheduleToXlsx(rows, assets, {
       colPeriod: c("colPeriod"),
       colRou: c("colRou"),
       colAccumulatedDepreciation: c("colAccumulatedDepreciation"),
@@ -28,6 +34,9 @@ export function SummaryPortfolioPanel({ assets }: SummaryPortfolioPanelProps) {
       colCurrentLiab: c("colCurrentLiab"),
       colNonCurrentLiab: c("colNonCurrentLiab"),
       colTotalLiab: c("colTotalLiab"),
+    }, {
+      summarySheetName: c("tabSummary"),
+      assetSheetName: assetTabLabel,
     });
   };
 
@@ -41,7 +50,7 @@ export function SummaryPortfolioPanel({ assets }: SummaryPortfolioPanelProps) {
           type="button"
           className="btn calculator-excel-btn"
           onClick={handleExportExcel}
-          disabled={rows.length === 0}
+          disabled={rows.length === 0 && assets.every((asset) => asset.schedule.length === 0)}
         >
           {c("btnExcel")}
         </button>

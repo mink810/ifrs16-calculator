@@ -1,6 +1,6 @@
 import * as XLSX from "xlsx-js-style";
 import { expandAssetScheduleToDisplayRows, type SummaryDisplayRow } from "./period-view";
-import type { LeaseScheduleRow } from "./types";
+import type { LeaseAsset, LeaseScheduleRow } from "./types";
 
 export type ScheduleExportLabels = {
   colPeriod: string;
@@ -19,6 +19,7 @@ export type SummaryScheduleExportRow = SummaryDisplayRow;
 
 const ARIAL_FONT = "Arial";
 const AMOUNT_NUM_FMT = "#,##0";
+const EXCEL_SHEET_NAME_MAX = 31;
 
 function buildExportFilename(): string {
   const today = new Date();
@@ -97,18 +98,8 @@ function createStyledWorksheet(
   return worksheet;
 }
 
-function downloadWorkbook(worksheet: XLSX.WorkSheet, sheetName: string) {
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
-  XLSX.writeFile(workbook, buildExportFilename());
-}
-
-export function exportScheduleToXlsx(
-  schedule: LeaseScheduleRow[],
-  labels: ScheduleExportLabels,
-  commencementDate: string
-): void {
-  const headers = [
+function buildHeaderRow(labels: ScheduleExportLabels): string[] {
+  return [
     labels.colPeriod,
     labels.colRou,
     labels.colAccumulatedDepreciation,
@@ -119,42 +110,10 @@ export function exportScheduleToXlsx(
     labels.colNonCurrentLiab,
     labels.colTotalLiab,
   ];
-
-  const bodyRows = expandAssetScheduleToDisplayRows(schedule, commencementDate).map(
-    (row) => [
-      row.period,
-      row.rou,
-      row.accumulatedDepreciation,
-      row.interest,
-      row.payment,
-      row.deprn,
-      row.currentLiability,
-      row.nonCurrentLiability,
-      row.totalLiability,
-    ]
-  );
-
-  const worksheet = createStyledWorksheet([headers, ...bodyRows], 1, 8);
-  downloadWorkbook(worksheet, "Schedule");
 }
 
-export function exportSummaryScheduleToXlsx(
-  rows: SummaryScheduleExportRow[],
-  labels: ScheduleExportLabels
-): void {
-  const headers = [
-    labels.colPeriod,
-    labels.colRou,
-    labels.colAccumulatedDepreciation,
-    labels.colInterest,
-    labels.colPayment,
-    labels.colDeprn,
-    labels.colCurrentLiab,
-    labels.colNonCurrentLiab,
-    labels.colTotalLiab,
-  ];
-
-  const bodyRows = rows.map((row) => [
+function displayRowToCells(row: SummaryDisplayRow): (string | number)[] {
+  return [
     row.period,
     row.rou,
     row.accumulatedDepreciation,
@@ -164,8 +123,103 @@ export function exportSummaryScheduleToXlsx(
     row.currentLiability,
     row.nonCurrentLiability,
     row.totalLiability,
+  ];
+}
+
+function createScheduleWorksheet(
+  rows: SummaryDisplayRow[],
+  labels: ScheduleExportLabels
+): XLSX.WorkSheet {
+  const bodyRows = rows.map(displayRowToCells);
+  return createStyledWorksheet([buildHeaderRow(labels), ...bodyRows], 1, 8);
+}
+
+function sanitizeSheetName(raw: string): string {
+  const cleaned = raw.replace(/[\\/?*[\]]/g, "").trim();
+  return (cleaned || "Sheet").slice(0, EXCEL_SHEET_NAME_MAX);
+}
+
+function uniqueSheetNames(names: string[]): string[] {
+  const used = new Map<string, number>();
+
+  return names.map((name) => {
+    const base = sanitizeSheetName(name);
+    const count = used.get(base) ?? 0;
+    used.set(base, count + 1);
+    if (count === 0) return base;
+
+    const suffix = ` (${count + 1})`;
+    return `${base.slice(0, EXCEL_SHEET_NAME_MAX - suffix.length)}${suffix}`;
+  });
+}
+
+function downloadWorkbook(sheets: { name: string; worksheet: XLSX.WorkSheet }[]) {
+  const workbook = XLSX.utils.book_new();
+  for (const sheet of sheets) {
+    XLSX.utils.book_append_sheet(workbook, sheet.worksheet, sheet.name);
+  }
+  XLSX.writeFile(workbook, buildExportFilename());
+}
+
+export function exportScheduleToXlsx(
+  schedule: LeaseScheduleRow[],
+  labels: ScheduleExportLabels,
+  commencementDate: string
+): void {
+  const rows = expandAssetScheduleToDisplayRows(schedule, commencementDate);
+  downloadWorkbook([{ name: "Schedule", worksheet: createScheduleWorksheet(rows, labels) }]);
+}
+
+export function exportSummaryScheduleToXlsx(
+  rows: SummaryScheduleExportRow[],
+  labels: ScheduleExportLabels
+): void {
+  downloadWorkbook([{ name: "Summary", worksheet: createScheduleWorksheet(rows, labels) }]);
+}
+
+export function exportPortfolioScheduleToXlsx(
+  summaryRows: SummaryScheduleExportRow[],
+  assets: LeaseAsset[],
+  labels: ScheduleExportLabels,
+  options: {
+    summarySheetName: string;
+    assetSheetName: (asset: LeaseAsset, index: number) => string;
+  }
+): void {
+  const sheets: { name: string; worksheet: XLSX.WorkSheet }[] = [];
+
+  if (summaryRows.length > 0) {
+    sheets.push({
+      name: sanitizeSheetName(options.summarySheetName),
+      worksheet: createScheduleWorksheet(summaryRows, labels),
+    });
+  }
+
+  const assetSheets = assets
+    .map((asset, index) => {
+      const rows = expandAssetScheduleToDisplayRows(
+        asset.schedule,
+        asset.inputs.commencementDate
+      );
+      if (rows.length === 0) return null;
+      return {
+        name: options.assetSheetName(asset, index),
+        worksheet: createScheduleWorksheet(rows, labels),
+      };
+    })
+    .filter((sheet): sheet is { name: string; worksheet: XLSX.WorkSheet } => sheet !== null);
+
+  const uniqueNames = uniqueSheetNames([
+    ...sheets.map((sheet) => sheet.name),
+    ...assetSheets.map((sheet) => sheet.name),
   ]);
 
-  const worksheet = createStyledWorksheet([headers, ...bodyRows], 1, 8);
-  downloadWorkbook(worksheet, "Summary");
+  const allSheets = [...sheets, ...assetSheets].map((sheet, index) => ({
+    ...sheet,
+    name: uniqueNames[index] ?? sanitizeSheetName(sheet.name),
+  }));
+
+  if (allSheets.length === 0) return;
+
+  downloadWorkbook(allSheets);
 }
